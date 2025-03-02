@@ -1,0 +1,56 @@
+# compose file to run the redis server, web services, and queue-task
+# redis for work queue, rqdash for debugging jobs
+# web for web interface, worker for job worker(s)
+
+services:
+  redis:
+    container_name: redis
+    ports:
+      - 6379:6379
+    image: redis:8.0-M03-alpine
+  rqdash:
+    container_name: rqdash
+    image: cjlapao/rq-dashboard:latest
+    ports:
+      - 9181:9181
+    environment:
+      RQ_DASHBOARD_REDIS_URL: redis://redis:6379
+  
+  web:
+    build: .
+    image: jobs_template
+    # only use local images
+    pull_policy: never
+    container_name: web
+    ports:
+      - 8080:8080
+    working_dir: /app
+    command: python server.py
+    environment:
+      - SERVER_LOG_LEVEL=INFO
+      - SERVER_LOG_FILE=/log/app.log
+    depends_on:
+      - redis
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+        - action: rebuild
+          path: uv.lock
+          #path: requirements.txt
+
+  worker:
+    image: jobs_template
+    # only use local images
+    pull_policy: never
+    container_name: worker
+    command: rq worker --url redis://redis:6379 high default low
+    volumes:
+      - ./downloads:/downloads
+    working_dir: /downloads
+    environment:
+      - WORKER_LOG_LEVEL=DEBUG
+      - WORKER_LOG_FILE=/log/worker.log
+    depends_on:
+      - redis
