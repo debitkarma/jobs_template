@@ -1,0 +1,12 @@
+[project]
+name = "jobs-template"
+version = "0.1.0"
+description = "Template project for running jobs with Bottle, Redis, and RQ in docker"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "bottle>=0.13.2",
+    "loguru>=0.7.3",
+    "redis>=5.2.1",
+    "rq>=2.1.0",
+]
