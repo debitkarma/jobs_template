@@ -38,11 +38,11 @@ I make no claims as to reliability, and I am not liable for anything that may (a
 
 [Bottle](https://bottlepy.org/docs/dev/tutorial.html) is a lean and fairly lightweight web framework for python that's mostly familiar performant for small projects. It eschews scalability for simplicity, which is fine for small, personal tools and prototypes.
 
-The core logic and routes are in [[`server.py`]], where you can specify what to do with the submitted data and which function to call for queuing up a background job.
+The core logic and routes are in [`server.py`](https://github.com/debitkarma/jobs_template/blob/main/server.py), where you can specify what to do with the submitted data and which function to call for queuing up a background job.
 
-The main page template is in [[templates/template.tpl]], and here you'll find the basic `htmx` post request to submit job(s) and the polling of specific end points to show the job data.
+The main page template is in [templates/template.tpl](https://github.com/debitkarma/jobs_template/blob/main/templates/template.tpl), and here you'll find the basic `htmx` post request to submit job(s) and the polling of specific end points to show the job data.
 
-Other templates in [[templates/]] are there to show the info of each job as it gets sorted into these discrete statuses:
+Other templates in [templates/](https://github.com/debitkarma/jobs_template/blob/main/templates/) are there to show the info of each job as it gets sorted into these discrete statuses:
   * **submitted** - individual jobs that were submitted and read from the post request
   * **running** - the currently running job(s)
   * **queued** - jobs waiting in a queue for proecessing
